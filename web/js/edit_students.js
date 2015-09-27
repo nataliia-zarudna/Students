@@ -17,20 +17,15 @@ function init() {
                 var currentRow = $(studentParams[i]);
                 editData[currentRow.attr("name")] = currentRow.text();
             }
-
             var studentID = studentRow.attr("student_id");
             editData["id"] = studentID;
-
-            console.log(studentID);
-            console.log(studentParams);
-            console.log(editData);
 
             $.ajax({
                 url: "Students/update",
                 data: editData,
                 method: "post",
                 success: function(data) {
-                    alert("OK");
+                    console.log("Student with id = " + studentID + " has been updated");
                 }
             });
 

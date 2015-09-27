@@ -16,16 +16,6 @@ class Student
 
     private static $registry;
 
-    /*function __construct($first_name, $second_name, $age, $gender, $address, $id = null)
-    {
-        $this->id = $id;
-        $this->first_name = $first_name;
-        $this->second_name = $second_name;
-        $this->age = $age;
-        $this->gender = $gender;
-        $this->address = $address;
-    }*/
-
     /**
      * @return int
      */
@@ -143,6 +133,15 @@ class Student
 
     public function save()
     {
+        if(isset($this->id)) {
+            return $this->update();
+        } else {
+            return $this->create();
+        }
+    }
+
+    private function create()
+    {
         try {
 
             $preparedStatement = self::getDB()->prepare("insert into students"
@@ -161,7 +160,7 @@ class Student
 
     }
 
-    public function update()
+    private function update()
     {
         try {
 

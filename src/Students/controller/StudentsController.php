@@ -61,7 +61,7 @@ class StudentsController Extends Controller
         $student->setGender($params["gender"]);
         $student->setAddress($params["address"]);
 
-        $student->update();
+        $student->save();
 
         $response = $this->index();
         $response->setType("redirect");

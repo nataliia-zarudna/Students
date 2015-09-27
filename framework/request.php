@@ -6,11 +6,10 @@ class Request {
 
     private $url;
     private $params;
+    private $header;
 
-    function __construct($url, $params)
-    {
+    public function __construct($url) {
         $this->url = $url;
-        $this->params = $params;
     }
 
     /**
@@ -43,6 +42,14 @@ class Request {
     public function setParams($params)
     {
         $this->params = $params;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHeader()
+    {
+        return $this->header;
     }
 
 }

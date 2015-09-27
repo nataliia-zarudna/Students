@@ -8,6 +8,7 @@ class Response
     private $params;
     private $path;
     private $type;
+    private $code;
 
     function __construct($view, $params = null)
     {
@@ -77,6 +78,22 @@ class Response
     public function setType($type)
     {
         $this->type = $type;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param mixed $code
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
     }
 
 }
