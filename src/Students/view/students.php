@@ -31,10 +31,10 @@
 
                 ?>
 
-                <tr class='student_info' student_id=' <?php $students[$i]->getId() ?> '>
-                    <td contenteditable='true' name='first_name'><?php $students[$i]->getFirstName() ?></td>
-                    <td contenteditable='true' name='second_name'> <?php $students[$i]->getSecondName() ?></td>
-                    <td contenteditable='true' name='age'> <?php $students[$i]->getAge() ?></td>
+                <tr class='student_info' student_id='<?php echo $students[$i]->getId(); ?>'>
+                    <td contenteditable='true' name='first_name'><?php echo $students[$i]->getFirstName(); ?></td>
+                    <td contenteditable='true' name='second_name'> <?php echo $students[$i]->getSecondName(); ?></td>
+                    <td contenteditable='true' name='age'> <?php echo $students[$i]->getAge(); ?></td>
 
                     <td contenteditable='true' name='gender'>
                         <select>
@@ -53,8 +53,8 @@
                         </select>
                     </td>
 
-                    <td contenteditable='true' name='address'> <?php $students[$i]->getAddress() ?></td>
-                    <td><a href='/students/delete?id=' <?php $students[$i]->getId() ?> '>[x]</a></td>
+                    <td contenteditable='true' name='address'> <?php echo $students[$i]->getAddress(); ?></td>
+                    <td><a href='/students/delete?id=<?php echo $students[$i]->getId(); ?>'>[x]</a></td>
                 </tr>
             <?php }
         }
@@ -70,7 +70,7 @@
     <div class="row">
         <div class="col-xs-2">
             <label class="error-message" for="first_name"></label>
-            <input type="text" class="form-control" name="first_name" placeholder="first name" value=""/>
+            <input type="text" class="form-control valid-param" name="first_name" placeholder="first name" value=""/>
             <br/>
         </div>
     </div>
@@ -78,7 +78,7 @@
     <div class="row">
         <div class="col-xs-2">
             <label class="error-message" for="second_name"></label>
-            <input type="text" class="form-control" name="second_name" placeholder="second name" value="Ivanov"/>
+            <input type="text" class="form-control valid-param" name="second_name" placeholder="second name" value="Ivanov"/>
             <br/>
         </div>
     </div>
@@ -86,7 +86,7 @@
     <div class="row">
         <div class="col-xs-2">
             <label class="error-message" for="age"></label>
-            <input type="text" class="form-control" name="age" placeholder="age" value="23"/>
+            <input type="text" class="form-control valid-param" name="age" placeholder="age" value="23"/>
             <br/>
         </div>
     </div>
@@ -94,7 +94,7 @@
     <div class="row">
         <div class="form-group col-xs-2">
             <label class="error-message" for="gender"></label>
-            <select class="form-control" name="gender">
+            <select class="form-control valid-param" name="gender">
                 <option>male</option>
                 <option>female</option>
             </select>
@@ -105,7 +105,7 @@
     <div class="row">
         <div class="form-group col-xs-2">
             <label class="error-message" for="address"></label>
-            <input type="text" class="form-control" name="address" placeholder="address" value="Sumy"/>
+            <input type="text" class="form-control valid-param" name="address" placeholder="address" value="Sumy"/>
             <br/>
         </div>
     </div>

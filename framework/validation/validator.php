@@ -76,16 +76,11 @@ class Validator
 
     private function valueBetween($value, $params)
     {
-
-        if (isset($params->min)
-            && $value < $params->min
-        ) {
-
-            return false;
-        }
-
-        if (isset($params->max)
-            && $value > $params->max
+        if ($value !== ""
+            && ((isset($params->min)
+                    && $value < $params->min)
+                || (isset($params->max)
+                    && $value > $params->max))
         ) {
 
             return false;
@@ -94,9 +89,10 @@ class Validator
         return true;
     }
 
-    private function onlyDigits($value, $params) {
+    private function onlyDigits($value, $params)
+    {
 
-        if(preg_match('/^[0-9]*$/', $value) == 0) {
+        if (preg_match('/^[0-9]*$/', $value) == 0) {
             return false;
         } else {
             return true;
@@ -106,7 +102,7 @@ class Validator
     private function regexp($value, $params)
     {
         if (isset($params->regexp)
-            && preg_match("#".$params->regexp."#", $value) == 0
+            && preg_match("#" . $params->regexp . "#", $value) == 0
         ) {
 
             return false;
