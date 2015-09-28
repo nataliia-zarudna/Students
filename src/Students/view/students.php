@@ -2,6 +2,7 @@
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../../web/js/edit_students.js"></script>
+<script type="text/javascript" src="../../../web/js/validation.js"></script>
 
 <div class="page-header">
     <h1>Students</h1>
@@ -24,20 +25,38 @@
         <?php
 
         if (isset($students)) {
-            for ($i = 0; $i < count($students); $i++) {
+            for ($i = 0;
+                 $i < count($students);
+                 $i++) {
 
-                echo "<tr class='student_info' student_id=" . $students[$i]->getId() . ">";
-                echo "<td contenteditable='true' name='first_name'>" . $students[$i]->getFirstName() . "</td>";
-                echo "<td contenteditable='true' name='second_name'>" . $students[$i]->getSecondName() . "</td>";
-                echo "<td contenteditable='true' name='age'>" . $students[$i]->getAge() . "</td>";
-                echo "<td contenteditable='true' name='gender'>" . $students[$i]->getGender() . "</td>";
+                ?>
 
-                //echo "<td><select name='gender'" . $students[$i]->getGender() . "></select></td>";
+                <tr class='student_info' student_id=' <?php $students[$i]->getId() ?> '>
+                    <td contenteditable='true' name='first_name'><?php $students[$i]->getFirstName() ?></td>
+                    <td contenteditable='true' name='second_name'> <?php $students[$i]->getSecondName() ?></td>
+                    <td contenteditable='true' name='age'> <?php $students[$i]->getAge() ?></td>
 
-                echo "<td contenteditable='true' name='address'>" . $students[$i]->getAddress() . "</td>";
-                echo "<td><a href='/students/delete?id=" . $students[$i]->getId() . "'>[x]</a></td>";
-                echo "</tr>";
-            }
+                    <td contenteditable='true' name='gender'>
+                        <select>
+                            <option <?php
+                            if ($students[$i]->getGender() == "male") {
+                                echo "selected";
+                            } ?>
+                                >male
+                            </option>
+                            <option <?php
+                            if ($students[$i]->getGender() == "female") {
+                                echo "selected";
+                            } ?>
+                                >female
+                            </option>
+                        </select>
+                    </td>
+
+                    <td contenteditable='true' name='address'> <?php $students[$i]->getAddress() ?></td>
+                    <td><a href='/students/delete?id=' <?php $students[$i]->getId() ?> '>[x]</a></td>
+                </tr>
+            <?php }
         }
         ?>
         </tbody>
@@ -46,17 +65,50 @@
 
 <br/>
 
-<form class="form-inline" action="/Students/add" method="post">
-    <input type="text" class="form-control" name="first_name" placeholder="first name" value="Ivan"/>
-    <input type="text" class="form-control" name="second_name" placeholder="second name" value="Ivanov"/>
-    <input type="text" class="form-control" name="age" placeholder="age" value="23"/>
-    <!--input type="text" class="form-control" name="gender" placeholder="gender" value="m"/-->
+<form role="form" class=" valid-form" action="/Students/add" method="post">
 
-    <select class="form-control" name="gender">
-        <option>male</option>
-        <option>female</option>
-    </select>
+    <div class="row">
+        <div class="col-xs-2">
+            <label class="error-message" for="first_name"></label>
+            <input type="text" class="form-control" name="first_name" placeholder="first name" value=""/>
+            <br/>
+        </div>
+    </div>
 
-    <input type="text" class="form-control" name="address" placeholder="address" value="Sumy"/>
+    <div class="row">
+        <div class="col-xs-2">
+            <label class="error-message" for="second_name"></label>
+            <input type="text" class="form-control" name="second_name" placeholder="second name" value="Ivanov"/>
+            <br/>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-2">
+            <label class="error-message" for="age"></label>
+            <input type="text" class="form-control" name="age" placeholder="age" value="23"/>
+            <br/>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-xs-2">
+            <label class="error-message" for="gender"></label>
+            <select class="form-control" name="gender">
+                <option>male</option>
+                <option>female</option>
+            </select>
+            <br/>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-xs-2">
+            <label class="error-message" for="address"></label>
+            <input type="text" class="form-control" name="address" placeholder="address" value="Sumy"/>
+            <br/>
+        </div>
+    </div>
+
     <input class="btn btn-default" type="submit" value="Add">
 </form>

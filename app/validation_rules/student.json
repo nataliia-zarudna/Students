@@ -1,0 +1,31 @@
+[
+  {
+    "field": "first_name",
+    "rule": "notEmpty",
+    "params": {},
+    "message": "Please, enter first name"
+  },
+  {
+    "field": "second_name",
+    "rule": "regexp",
+    "params": {
+      "regexp": "^[a-zA-Z]+$"
+    },
+    "message": "Please, enter second name correctly"
+  },
+  {
+    "field": "age",
+    "rule": "valueBetween",
+    "params": {
+      "min": 16,
+      "max": 100
+    },
+    "message": "Age seems unreal"
+  },
+  {
+    "field": "age",
+    "rule": "onlyDigits",
+    "params": {},
+    "message": "Age may contain only digits"
+  }
+]

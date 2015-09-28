@@ -7,6 +7,7 @@ namespace controller;
 use controller\Controller;
 use framework\Request;
 use framework\Response;
+use framework\validation\Validator;
 use model\Student;
 
 class StudentsController Extends Controller
@@ -17,6 +18,24 @@ class StudentsController Extends Controller
         $students = Student::findAll();
 
         return new Response("students", array("students" => $students));
+    }
+
+    public function validate($request) {
+
+        Student::setRegistry($this->registry);
+
+        $params = $request->getParams();
+
+        $student = new Student();
+        $student->setFirstName($params["first_name"]);
+        $student->setSecondName($params["second_name"]);
+        $student->setAge($params["age"]);
+        $student->setGender($params["gender"]);
+        $student->setAddress($params["address"]);
+
+        $validationResult = (new Validator())->validate($student);
+
+        return new Response("validationResult", array("validationResult" => $validationResult));
     }
 
     /**

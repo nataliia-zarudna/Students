@@ -5,6 +5,7 @@ use framework\Router;
 use framework\Request;
 use framework\Template;
 use framework\Logger;
+use framework\ConfigManager;
 
 define('ROOT',  $_SERVER['DOCUMENT_ROOT'] );
 
@@ -13,11 +14,11 @@ spl_autoload_register(array("Loader", "loadClass"));
 
 $registry = new Registry();
 
-$db = new PDO(getConfig("db"));
+$db = new PDO(ConfigManager::getConfig("db"));
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $registry["db"] = $db;
 
-$logger = new Logger(ROOT.getConfig("log_file"));
+$logger = new Logger(ROOT.ConfigManager::getConfig("log_file"));
 $registry["logger"] = $logger;
 
 $router = Router::getInstance($registry);
@@ -51,22 +52,7 @@ if(preg_match('/^\/web\//',$_SERVER['REQUEST_URI']) > 0) {
     }
 }
 
-function getConfig($name) {
 
-    $file = fopen(ROOT."/app/config.properties", "r");
-    if($file) {
-
-        while(($line = fgets($file)) !== false) {
-            if(preg_match('/^'.$name.'/', $line) > 0) {
-
-                $value = explode("=", $line)[1];
-                return trim($value);
-            }
-        }
-    } else {
-        //TODO handle exception
-    }
-}
 ?>
 
 

@@ -5,31 +5,45 @@ $(document).ready(init);
 
 function init() {
 
-    $(".student_info").children("td[contenteditable=true]").on("blur",
-        function(event, data) {
+    $(".student_info td[name]").on("blur", editStudent);
 
-            var editData = new Object();
+    $(".student_info td[name] select").on("change", editStudent);
 
-            var studentRow = $(this).parent("tr");
-            var studentParams = studentRow.children("td[name]");
-            for(var i = 0; i < studentParams.length; i++) {
+}
 
-                var currentRow = $(studentParams[i]);
-                editData[currentRow.attr("name")] = currentRow.text();
-            }
-            var studentID = studentRow.attr("student_id");
-            editData["id"] = studentID;
+function editStudent() {
 
-            $.ajax({
-                url: "Students/update",
-                data: editData,
-                method: "post",
-                success: function(data) {
-                    console.log("Student with id = " + studentID + " has been updated");
-                }
-            });
+    console.log("dfsdf");
 
+    var editData = new Object();
+
+    var studentRow = $(this).closest("tr");
+
+    console.log(studentRow);
+
+    var studentParams = studentRow.children("td[name]");
+    for(var i = 0; i < studentParams.length; i++) {
+
+        var currentRow = $(studentParams[i]);
+        var value = "";
+        if(currentRow.children("select").length == 0) {
+            value = currentRow.text();
+        } else {
+            value = $(currentRow.children("select")[0]).val();
         }
-    );
+
+        editData[currentRow.attr("name")] = value;
+    }
+    var studentID = studentRow.attr("student_id");
+    editData["id"] = studentID;
+
+    $.ajax({
+        url: "Students/update",
+        data: editData,
+        method: "post",
+        success: function(data) {
+            console.log("Student with id = " + studentID + " has been updated");
+        }
+    });
 
 }
