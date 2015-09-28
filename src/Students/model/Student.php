@@ -251,8 +251,6 @@ class Student
     {
         try {
 
-            self::getLogger()->debug("dsfdfs");
-
             $preparedStatement = self::getDB()->query("select  "
                 . " first_name "
                 . ", second_name"
