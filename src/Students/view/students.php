@@ -1,8 +1,9 @@
 <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="../../../framework/web/css/validation.css" />
+<script type="text/javascript" src="../../../framework/web/js/validation.js"></script>
 <script type="text/javascript" src="../../../web/js/edit_students.js"></script>
-<script type="text/javascript" src="../../../web/js/validation.js"></script>
 
 <div class="page-header">
     <h1>Students</h1>
@@ -31,13 +32,30 @@
 
                 ?>
 
-                <tr class='student_info' student_id='<?php echo $students[$i]->getId(); ?>'>
-                    <td contenteditable='true' name='first_name'><?php echo $students[$i]->getFirstName(); ?></td>
-                    <td contenteditable='true' name='second_name'> <?php echo $students[$i]->getSecondName(); ?></td>
-                    <td contenteditable='true' name='age'> <?php echo $students[$i]->getAge(); ?></td>
+                <tr class='student_info valid-form' student_id='<?php echo $students[$i]->getId(); ?>'>
 
-                    <td contenteditable='true' name='gender'>
-                        <select>
+                    <td>
+                        <p class="error-message" for="first_name"></p>
+                        <p contenteditable='true' class="valid-param" name='first_name'>
+                            <?php echo $students[$i]->getFirstName(); ?>
+                        </p>
+                    </td>
+                    <td>
+                        <p class="error-message" for="second_name"></p>
+                        <p contenteditable='true' class="valid-param" name='second_name'>
+                        <?php echo $students[$i]->getSecondName(); ?>
+                        </p>
+                    </td>
+                    <td>
+                        <p class="error-message" for="age"></p>
+                        <p contenteditable='true' class="valid-param" name='age'>
+                            <?php echo $students[$i]->getAge(); ?>
+                        </p>
+                    </td>
+
+                    <td>
+                        <p class="error-message" for="gender"></p>
+                        <select class="valid-param" name='gender'>
                             <option <?php
                             if ($students[$i]->getGender() == "male") {
                                 echo "selected";
@@ -53,7 +71,12 @@
                         </select>
                     </td>
 
-                    <td contenteditable='true' name='address'> <?php echo $students[$i]->getAddress(); ?></td>
+                    <td>
+                        <p class="error-message" for="address"></p>
+                        <p contenteditable='true' class="valid-param" name='address'>
+                        <?php echo $students[$i]->getAddress(); ?>
+                        </p>
+                    </td>
                     <td><a href='/students/delete?id=<?php echo $students[$i]->getId(); ?>'>[x]</a></td>
                 </tr>
             <?php }
@@ -64,6 +87,7 @@
 </div>
 
 <br/>
+<hr/>
 
 <form role="form" class=" valid-form" action="/Students/add" method="post">
 
@@ -78,7 +102,8 @@
     <div class="row">
         <div class="col-xs-2">
             <label class="error-message" for="second_name"></label>
-            <input type="text" class="form-control valid-param" name="second_name" placeholder="second name" value="Ivanov"/>
+            <input type="text" class="form-control valid-param" name="second_name" placeholder="second name"
+                   value="Ivanov"/>
             <br/>
         </div>
     </div>

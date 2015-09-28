@@ -1,48 +1,42 @@
 <?php
 
-//require_once(ROOT."/src/Students/controller/Controller.php");
-
 namespace controller;
 
-use controller\Controller;
-use framework\Request;
-use framework\Response;
-use framework\validation\Validator;
+use framework\core\Request;
+use framework\core\Response;
+use framework\core\validation\Validator;
+use model\ModelException;
 use model\Student;
 
 class StudentsController Extends Controller
 {
-    public function index()
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return string
+     */
+    public function index($request, $response)
     {
-        Student::setRegistry($this->registry);
-        $students = Student::findAll();
+        try {
 
-        return new Response("students", array("students" => $students));
-    }
+            Student::setRegistry($this->registry);
+            $students = Student::findAll();
 
-    public function validate($request) {
+            $response->setParams(array("students" => $students));
+            return "students";
 
-        Student::setRegistry($this->registry);
-
-        $params = $request->getParams();
-
-        $student = new Student();
-        $student->setFirstName($params["first_name"]);
-        $student->setSecondName($params["second_name"]);
-        $student->setAge($params["age"]);
-        $student->setGender($params["gender"]);
-        $student->setAddress($params["address"]);
-
-        $validationResult = (new Validator())->validate($student);
-
-        return new Response("validationResult", array("validationResult" => $validationResult));
+        } catch (ModelException $e) {
+            $response->setParams(array("exception" => $e->getMessage()));
+            $response->sendRedirect("error");
+        }
     }
 
     /**
      * @param Request $request
-     * @return Response
+     * @param Response $response
+     * @return string
      */
-    public function add($request)
+    public function validate($request, $response)
     {
         Student::setRegistry($this->registry);
 
@@ -55,50 +49,96 @@ class StudentsController Extends Controller
         $student->setGender($params["gender"]);
         $student->setAddress($params["address"]);
 
-        $student->save();
+        $validator = new Validator();
+        $validationResult = $validator->validate($student);
 
-        $response = $this->index();
-        $response->setType("redirect");
-        return $response;
+        $response->setParams(array("validationResult" => $validationResult));
+        $response->setPath(ROOT . Validator::$VALIDATION_RESULT_PATH);
+        return Validator::$VALIDATION_RESULT_VIEW;
     }
 
     /**
      * @param Request $request
+     * @param Response $response
      * @return Response
      */
-    public function update($request) {
+    public function add($request, $response)
+    {
+        Student::setRegistry($this->registry);
 
         $params = $request->getParams();
 
-        Student::setRegistry($this->registry);
+        try {
+            $student = new Student();
+            $student->setFirstName($params["first_name"]);
+            $student->setSecondName($params["second_name"]);
+            $student->setAge($params["age"]);
+            $student->setGender($params["gender"]);
+            $student->setAddress($params["address"]);
 
-        $student = Student::find($params["id"]);
+            $student->save();
 
-        $student->setFirstName($params["first_name"]);
-        $student->setSecondName($params["second_name"]);
-        $student->setAge($params["age"]);
-        $student->setGender($params["gender"]);
-        $student->setAddress($params["address"]);
+        } catch (ModelException $e) {
+            $response->setParams(array("exception" => $e->getMessage()));
+            $response->sendRedirect("error");
+        }
 
-        $student->save();
-
-        $response = $this->index();
-        $response->setType("redirect");
-        return $response;
+        $response->sendRedirect("students");
     }
 
-    public function delete($request) {
-
-        Student::setRegistry($this->registry);
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
+    public function update($request, $response)
+    {
 
         $params = $request->getParams();
 
-        $student = Student::find($params["id"]);
-        $student->delete();
+        Student::setRegistry($this->registry);
 
-        $response = $this->index();
-        $response->setType("redirect");
-        return $response;
+        try {
+
+            $student = Student::find($params["id"]);
+
+            $student->setFirstName($params["first_name"]);
+            $student->setSecondName($params["second_name"]);
+            $student->setAge($params["age"]);
+            $student->setGender($params["gender"]);
+            $student->setAddress($params["address"]);
+
+            $student->save();
+
+        } catch (ModelException $e) {
+            $response->setParams(array("exception" => $e->getMessage()));
+            $response->sendRedirect("error");
+        }
+
+        $response->sendRedirect("students");
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     */
+    public function delete($request, $response)
+    {
+        try {
+
+            Student::setRegistry($this->registry);
+
+            $params = $request->getParams();
+
+            $student = Student::find($params["id"]);
+            $student->delete();
+
+        } catch (ModelException $e) {
+            $response->setParams(array("exception" => $e->getMessage()));
+            $response->sendRedirect("error");
+        }
+
+        $response->sendRedirect("students");
     }
 
 }

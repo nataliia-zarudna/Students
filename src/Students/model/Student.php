@@ -2,7 +2,8 @@
 
 namespace model;
 
-use framework\Logger;
+use framework\core\log\Logger;
+use framework\core\Registry;
 use PDO;
 
 class Student
@@ -97,7 +98,7 @@ class Student
     }
 
     /**
-     * @param string $group
+     * @param string $address
      */
     public function setAddress($address)
     {
@@ -105,7 +106,7 @@ class Student
     }
 
     /**
-     * @return PDO
+     * @return Registry
      */
     public static function getRegistry()
     {
@@ -113,13 +114,16 @@ class Student
     }
 
     /**
-     * @param PDO $db
+     * @param Registry $registry
      */
     public static function setRegistry($registry)
     {
         self::$registry = $registry;
     }
 
+    /**
+     * @return PDO
+     */
     private static function getDB() {
         return self::$registry["db"];
     }
@@ -131,6 +135,9 @@ class Student
         return self::$registry["logger"];
     }
 
+    /**
+     * @return Student
+     */
     public function save()
     {
         if(isset($this->id)) {
@@ -140,6 +147,9 @@ class Student
         }
     }
 
+    /**
+     * @return Student
+     */
     private function create()
     {
         try {
@@ -154,12 +164,15 @@ class Student
             return self::find($createdID);
 
         } catch (PDOException $e) {
-            echo "Exception trying to create student with id " . $this . id;
             self::getLogger()->error($e->getMessage(), $e);
+            throw new ModelException("Exception trying to create student with id " . $this . id, $e);
         }
 
     }
 
+    /**
+     * @return Student
+     */
     private function update()
     {
         try {
@@ -185,8 +198,6 @@ class Student
     public function delete()
     {
         try {
-
-            echo "DELETE ".$this->id;
 
             $preparedStatement = self::getDB()->prepare("delete from students where id = :id");
             $preparedStatement->bindParam(":id", $this->id, PDO::PARAM_INT);
@@ -233,6 +244,9 @@ class Student
         }
     }
 
+    /**
+     * @return Student[]
+     */
     public static function findAll()
     {
         try {
@@ -256,7 +270,9 @@ class Student
         }
     }
 
-
+    /**
+     * @return array
+     */
     private function toArray()
     {
         $array = array(

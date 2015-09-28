@@ -1,16 +1,17 @@
 <?php
 
-use framework\Registry;
-use framework\Router;
-use framework\Request;
-use framework\Template;
-use framework\Logger;
-use framework\ConfigManager;
+use framework\core\Registry;
+use framework\core\Response;
+use framework\core\Router;
+use framework\core\Request;
+use framework\core\view\Template;
+use framework\core\log\Logger;
+use framework\core\ConfigManager;
 
 define('ROOT',  $_SERVER['DOCUMENT_ROOT'] );
 
-require_once(ROOT . "/framework/loader.php");
-spl_autoload_register(array("Loader", "loadClass"));
+require_once(ROOT . "/framework/core/loader.php");
+spl_autoload_register(array("framework\core\Loader", "loadClass"));
 
 $registry = new Registry();
 
@@ -23,7 +24,7 @@ $registry["logger"] = $logger;
 
 $router = Router::getInstance($registry);
 
-if(preg_match('/^\/web\//',$_SERVER['REQUEST_URI']) > 0) {
+if(isWebFileRequested() > 0) {
 
     readfile(ROOT.$_SERVER['REQUEST_URI']);
 
@@ -32,6 +33,7 @@ if(preg_match('/^\/web\//',$_SERVER['REQUEST_URI']) > 0) {
     $urlParts = explode('?', $_SERVER['REQUEST_URI'], 2);
     $request = new Request($urlParts[0]);
     $request->setParams($_REQUEST);
+    $response = new Response();
 
     $controllerData = $router->getController($request->getUrl());
     $controller = $controllerData["controller"];
@@ -39,20 +41,23 @@ if(preg_match('/^\/web\//',$_SERVER['REQUEST_URI']) > 0) {
 
         $action = $controllerData["action"];
 
-        $response = $controller->$action($request);
+        $view = $controller->$action($request, $response);
 
-        $response->setPath(ROOT."/src/Students/view");
+        if($response->getPath() == "") {
+            $response->setPath(ROOT . "/src/Students/view");
+        }
 
-        $view = new Template($response);
-        $view->show();
-    }
+        $template = new Template($view, $response);
+        $template->show();
 
-    else {
-        header("Location: /students");
+    } else {
+        $response->sendRedirect("students");
     }
 }
 
-
+function isWebFileRequested() {
+    return preg_match('/\/web\//',$_SERVER['REQUEST_URI']);
+}
 ?>
 
 

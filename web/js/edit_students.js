@@ -5,34 +5,39 @@ $(document).ready(init);
 
 function init() {
 
-    $(".student_info td[name]").on("blur", editStudent);
+    $(".student_info .valid-param").on("blur",
+        function(event, data) {
 
-    $(".student_info td[name] select").on("change", editStudent);
-
+            validate(
+                function (event, field) {
+                    editStudent(field);
+                },
+                function (event) {
+                    event.preventDefault();
+                },
+                event
+                , $(this))
+        });
 }
 
-function editStudent() {
-
-    console.log("dfsdf");
+function editStudent(editField) {
 
     var editData = new Object();
 
-    var studentRow = $(this).closest("tr");
-
-    console.log(studentRow);
-
-    var studentParams = studentRow.children("td[name]");
+    var studentRow = editField.closest("tr");
+    var studentParams = studentRow.find(".valid-param");
     for(var i = 0; i < studentParams.length; i++) {
 
-        var currentRow = $(studentParams[i]);
+        var currentParam = $(studentParams[i]);
+
         var value = "";
-        if(currentRow.children("select").length == 0) {
-            value = currentRow.text();
+        if(currentParam.prop("tagName") === "SELECT") {
+            value = currentParam.val();
         } else {
-            value = $(currentRow.children("select")[0]).val();
+            value = currentParam.text();
         }
 
-        editData[currentRow.attr("name")] = value;
+        editData[currentParam.attr("name")] = value.trim();
     }
     var studentID = studentRow.attr("student_id");
     editData["id"] = studentID;
@@ -45,5 +50,4 @@ function editStudent() {
             console.log("Student with id = " + studentID + " has been updated");
         }
     });
-
 }
