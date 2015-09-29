@@ -102,8 +102,7 @@
     <div class="row">
         <div class="col-xs-2">
             <label class="error-message" for="second_name"></label>
-            <input type="text" class="form-control valid-param" name="second_name" placeholder="second name"
-                   value="Ivanov"/>
+            <input type="text" class="form-control valid-param" name="second_name" placeholder="second name" />
             <br/>
         </div>
     </div>
@@ -111,7 +110,7 @@
     <div class="row">
         <div class="col-xs-2">
             <label class="error-message" for="age"></label>
-            <input type="text" class="form-control valid-param" name="age" placeholder="age" value="23"/>
+            <input type="text" class="form-control valid-param" name="age" placeholder="age" />
             <br/>
         </div>
     </div>
@@ -120,7 +119,7 @@
         <div class="form-group col-xs-2">
             <label class="error-message" for="gender"></label>
             <select class="form-control valid-param" name="gender">
-                <option>male</option>
+                <option selected>male</option>
                 <option>female</option>
             </select>
             <br/>
@@ -130,7 +129,7 @@
     <div class="row">
         <div class="form-group col-xs-2">
             <label class="error-message" for="address"></label>
-            <input type="text" class="form-control valid-param" name="address" placeholder="address" value="Sumy"/>
+            <input type="text" class="form-control valid-param" name="address" placeholder="address" />
             <br/>
         </div>
     </div>

@@ -190,8 +190,8 @@ class Student
             return $this;
 
         } catch (PDOException $e) {
-            echo "Exception trying to save student with id " . $this . id;
             self::getLogger()->error($e->getMessage(), $e);
+            throw new ModelException("Exception trying to save student with id " . $this . id);
         }
     }
 
@@ -204,8 +204,8 @@ class Student
             $preparedStatement->execute();
 
         } catch (PDOException $e) {
-            echo "Exception trying to delete student with id " . $this . id;
             self::getLogger()->error($e->getMessage(), $e);
+            throw new ModelException("Exception trying to delete student with id " . $this . id);
         }
     }
 
@@ -239,8 +239,8 @@ class Student
             }
 
         } catch (PDOException $e) {
-            echo "Exception trying to find student with id " . $id;
             self::getLogger()->error($e->getMessage(), $e);
+            throw new ModelException("Exception trying to find student with id " . $id);
         }
     }
 
@@ -263,8 +263,8 @@ class Student
                 , "model\Student");
 
         } catch (PDOException $e) {
-            echo "Exception trying to find students";
             self::getLogger()->error($e->getMessage(), $e);
+            throw new ModelException("Exception trying to find students");
         }
     }
 
